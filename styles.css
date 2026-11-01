@@ -5,3 +5,18 @@ header{gap:20px}.selection-actions{display:flex;align-items:center;gap:16px}#ope
 header{position:sticky;top:0;z-index:20;background:var(--cream);box-shadow:0 3px 14px #332b2910}#catalogo{scroll-margin-top:130px}@media(max-width:760px){#catalogo{scroll-margin-top:180px}}
 
 .selection-hint{text-align:right;flex-shrink:0}.selection-hint span{display:block;white-space:nowrap}@media(max-width:350px){.selection-hint{max-width:none}#open-cart{font-size:13px;padding:8px 6px}#count{margin-left:3px}}
+
+/* Las piezas largas se encuadran completas, sin estirar la imagen. */
+.product-image{background-color:#f0e8de;overflow:hidden}
+.product-image svg{display:block;width:100%;height:100%;overflow:hidden}
+.card{display:flex;flex-direction:column}.card .add{margin-top:auto;min-height:44px}.card .price{margin-bottom:14px}
+nav{align-items:center}nav button{min-height:44px}
+.search{flex:1 0 210px;text-align:right}.search input{max-width:100%}
+#photo-stage .product-image{height:60vh;height:60dvh;background-size:contain;background-repeat:no-repeat}
+#photo-controls:not([hidden]){display:flex;justify-content:center;align-items:center;gap:18px;margin-top:14px}
+#photo-controls button{min-width:44px;min-height:44px}
+#original-photo{font-size:13px;color:var(--gold)}
+#cart-items{max-height:38vh;max-height:38dvh;overflow:auto;overscroll-behavior:contain}
+#send{min-height:48px}#cart .cart-row button{flex-shrink:0}
+@media(max-width:760px){nav{gap:6px}nav button{font-size:13px;padding:9px 12px}.search{text-align:left}.product-image{height:210px}.add{font-size:13px;padding:10px 6px}.meta{overflow-wrap:anywhere}#photo{padding:16px}#photo-stage .product-image{height:55vh;height:55dvh}}
+@media(max-width:390px){.product-image{height:175px}.card h3{font-size:18px}}
