@@ -26,3 +26,16 @@ nav{align-items:center}nav button{min-height:44px}
 :root{--header-height:100px}
 #catalogo>nav{position:sticky;top:var(--header-height);z-index:15;background:var(--cream);padding:10px 0;border-bottom:1px solid var(--line);box-shadow:0 5px 10px #332b2908}
 #catalogo{scroll-margin-top:calc(var(--header-height) + 16px)}
+
+/* Catálogo compacto: cuatro piezas en web y tres en móvil. */
+.grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:26px 18px}
+.card .product-image{height:auto;aspect-ratio:1}
+.card .product-image>img,.card .product-image>svg{aspect-ratio:1}
+.card h3{font-size:20px}
+@media(max-width:760px){
+ .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 8px}
+ .card h3{font-size:15px;line-height:1.2;margin:10px 0 5px;overflow-wrap:anywhere}
+ .card .meta{font-size:10px;line-height:1.4}
+ .card .price{font-size:12px;margin:7px 0 10px}
+ .card .add{font-size:11px;line-height:1.3;padding:8px 4px;min-height:44px}
+}
