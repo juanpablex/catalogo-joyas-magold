@@ -21,3 +21,8 @@ nav{align-items:center}nav button{min-height:44px}
 #send{min-height:48px}#cart .cart-row button{flex-shrink:0}
 @media(max-width:760px){nav{gap:6px}nav button{font-size:13px;padding:9px 12px}.search{text-align:left}.product-image{height:210px}.add{font-size:13px;padding:10px 6px}.meta{overflow-wrap:anywhere}#photo{padding:16px}#photo-stage .product-image{height:55vh;height:55dvh}}
 @media(max-width:390px){.product-image{height:175px}.card h3{font-size:18px}}
+
+/* Los filtros se mantienen debajo de la cabecera durante el recorrido. */
+:root{--header-height:100px}
+#catalogo>nav{position:sticky;top:var(--header-height);z-index:15;background:var(--cream);padding:10px 0;border-bottom:1px solid var(--line);box-shadow:0 5px 10px #332b2908}
+#catalogo{scroll-margin-top:calc(var(--header-height) + 16px)}

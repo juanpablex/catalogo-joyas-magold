@@ -5,6 +5,12 @@ let selected=new Set();
 try{const saved=JSON.parse(localStorage.getItem('joyas-selection')||'[]');if(Array.isArray(saved))selected=new Set(saved.filter(id=>products.some(p=>p.id===id)));}catch{}
 let category='Todas';
 const $=s=>document.querySelector(s);
+// La cabecera cambia de altura al pasar a móvil o ampliar el texto.
+const catalogHeader=document.querySelector('header');
+function updateHeaderHeight(){document.documentElement.style.setProperty('--header-height',`${Math.ceil(catalogHeader.getBoundingClientRect().height)}px`);}
+updateHeaderHeight();
+if('ResizeObserver' in window)new ResizeObserver(updateHeaderHeight).observe(catalogHeader);
+else window.addEventListener('resize',updateHeaderHeight);
 const money=n=>`${n.toLocaleString('es-BO')} Bs`;
 // Cargar cada foto cuando se acerca a la pantalla evita descargar todo el estuche al entrar.
 const photoLoader='IntersectionObserver' in window?new IntersectionObserver(entries=>{entries.forEach(({isIntersecting,target})=>{if(!isIntersecting)return;if(target.dataset.href)target.setAttribute('href',target.dataset.href);if(target.dataset.background)target.style.backgroundImage=`url("${target.dataset.background}")`;photoLoader.unobserve(target);});},{rootMargin:'300px'}):null;
