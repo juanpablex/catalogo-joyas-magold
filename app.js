@@ -11,6 +11,10 @@ const photoLoader='IntersectionObserver' in window?new IntersectionObserver(entr
 function loadPhoto(node){if(photoLoader)photoLoader.observe(node);else if(node.dataset.href)node.setAttribute('href',node.dataset.href);else node.style.backgroundImage=`url("${node.dataset.background}")`;}
 function photoFrame(p,photo,lazy=true){
  const frame=document.createElement('div');frame.className='product-image';
+ if(photo.thumbnail&&photo.detail){
+  const image=document.createElement('img');image.src=lazy?photo.thumbnail:photo.detail;image.alt=p.name;image.loading=lazy?'lazy':'eager';image.decoding='async';image.width=480;image.height=480;
+  frame.append(image);return frame;
+ }
  if(photo.crop){
   const ns='http://www.w3.org/2000/svg';const svg=document.createElementNS(ns,'svg');
   const width=photo.landscape?4000:3000,height=photo.landscape?3000:4000;
@@ -31,7 +35,7 @@ function showPhoto(){
  $('#photo-caption').textContent=`${p.name} · Código ${p.tag} · ${money(p.price)}`;
  $('#photo-number').textContent=`${photoIndex+1} / ${p.images.length}`;
  $('#photo-controls').hidden=p.images.length<2;
- $('#original-photo').href=photo.src;
+ $('#original-photo').href=photo.src.replace('assets/','assets/web/').replace(/\.jpg$/,'.webp');
 }
 function movePhoto(step){if(!activeProduct)return;photoIndex=(photoIndex+step+activeProduct.images.length)%activeProduct.images.length;showPhoto();}
 function openPhoto(p){activeProduct=p;photoIndex=0;showPhoto();$('#photo').showModal();}

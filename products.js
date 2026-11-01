@@ -56,12 +56,12 @@ const additions = [
   ['270','Anillo floral con color',[.30,.87,.35,.12]]]],
  ['231644','Anillos',[
   ['340','Anillo abierto de gotas',[.30,.08,.26,.14]],
-  ['166','Anillo de corazones calados',[.31,.28,.23,.055]],
-  ['136','Anillo de tres detalles claros',[.31,.39,.23,.06]],
-  ['265','Anillo de eslabones brillantes',[.30,.49,.25,.10]],
-  ['134','Anillo de línea ondulada',[.31,.62,.23,.055]],
-  ['203','Anillo de círculo abierto',[.31,.71,.23,.10]],
-  ['259','Anillo con fila de destellos',[.29,.88,.26,.11]]]],
+  ['166','Anillo de corazones calados',[.31,.30,.23,.08]],
+  ['136','Anillo de tres detalles claros',[.31,.415,.23,.075]],
+  ['265','Anillo de eslabones brillantes',[.30,.51,.25,.10]],
+  ['134','Anillo de línea ondulada',[.31,.64,.23,.075]],
+  ['203','Anillo de círculo abierto',[.31,.74,.23,.10]],
+  ['259','Anillo con fila de destellos',[.29,.88,.26,.12]]]],
  ['231755','Cadenas', [['292','Cadena de eslabones finos',[.12,.22,.57,.56]]]],
  ['231811','Cadenas', [['803','Cadena de eslabones rectangulares',[.01,.29,.83,.49]]]],
  ['232125','Cadenas', [['316','Cadena con detalles esféricos',[.02,.22,.85,.65]]]],
@@ -108,4 +108,4 @@ const originalCrops = {
 };
 existingProducts.forEach(p=>{const photo=p.image.match(/_(\d+)\.jpg$/)[1];const position=Number(p.id.split('-').at(-1))-1;p.crop=originalCrops[photo][position];});
 // Tres posiciones por pieza; por ahora repiten la foto disponible.
-window.PRODUCTS = [...existingProducts,...newProducts].map(p=>({...p,images:Array.from({length:3},()=>({src:p.image,crop:p.crop,landscape:p.landscape}))}));
+window.PRODUCTS = [...existingProducts,...newProducts].map(p=>({...p,images:Array.from({length:3},()=>({src:p.image,crop:p.crop,landscape:p.landscape,thumbnail:`assets/web/${p.id}-thumb.webp`,detail:`assets/web/${p.id}-detail.webp`}))}));

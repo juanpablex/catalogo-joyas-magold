@@ -8,7 +8,9 @@ Catálogo estático de un distribuidor independiente, sin base de datos ni depen
 2. En `products.js`, los códigos coinciden con las etiquetas y los precios corresponden a la columna contigua en negrita de la hoja proporcionada, según la aclaración del distribuidor. Editar los mapas `prices` y `extraPrices` para cambiar los precios en Bs. El código 209 de los aretes de gotas fue confirmado por el distribuidor.
 3. Los números de las etiquetas se repiten entre diseños. Cada producto tiene además una referencia única para identificarlo en el mensaje.
 
-Las vistas de cada pieza usan encuadres de las fotos originales mediante SVG, conservando su proporción. No se retocan las joyas. Cada producto se abre en un visor ampliado y ofrece un enlace a la foto original del estuche. Las fotos se cargan cerca de la pantalla para evitar descargarlas todas al entrar. No se han inferido materiales, medidas, tallas ni garantías.
+Las tarjetas cargan miniaturas WebP de hasta 480 píxeles y el detalle carga una versión de hasta 1000 píxeles solo al abrirlo. Los encuadres conservan la proporción de cada joya. Las fotos originales siguen guardadas sin cambios; el enlace del visor abre una copia ligera de la foto del estuche. La carga diferida evita descargar todo el catálogo al entrar. No se han inferido materiales, medidas, tallas ni garantías.
+
+Para regenerar las imágenes después de incorporar fotos o cambiar encuadres, ejecutar `python scripts/optimize_images.py` (requiere Pillow y Node). Genera las copias en `assets/web/`. Mantener estos archivos en el repositorio para que Pages los publique sin compilación.
 
 ## Más ángulos de una pieza
 
