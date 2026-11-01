@@ -107,4 +107,5 @@ const originalCrops = {
  '190134': [[.39,.01,.34,.19],[.39,.24,.29,.20],[.40,.48,.26,.20],[.39,.72,.31,.20]]
 };
 existingProducts.forEach(p=>{const photo=p.image.match(/_(\d+)\.jpg$/)[1];const position=Number(p.id.split('-').at(-1))-1;p.crop=originalCrops[photo][position];});
-window.PRODUCTS = [...existingProducts,...newProducts].map(p=>({...p,images:[{src:p.image,crop:p.crop,landscape:p.landscape}]}));
+// Tres posiciones por pieza; por ahora repiten la foto disponible.
+window.PRODUCTS = [...existingProducts,...newProducts].map(p=>({...p,images:Array.from({length:3},()=>({src:p.image,crop:p.crop,landscape:p.landscape}))}));

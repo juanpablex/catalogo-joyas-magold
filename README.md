@@ -12,7 +12,7 @@ Las vistas de cada pieza usan encuadres de las fotos originales mediante SVG, co
 
 ## Más ángulos de una pieza
 
-Cada producto expone un arreglo `images` con objetos `{src, crop, landscape}`. `crop` es opcional y usa `[izquierda, arriba, ancho, alto]` entre 0 y 1. `landscape` indica una foto horizontal. Al añadir más fotos al mismo producto, el visor muestra flechas, contador y permite deslizar con el dedo o navegar con las teclas izquierda/derecha. Mantener el `id` del producto para conservar las selecciones guardadas. Actualmente cada diseño tiene una vista; las próximas fotos podrán agregarse sin duplicar la joya.
+Cada producto expone un arreglo `images` con objetos `{src, crop, landscape}`. `crop` es opcional y usa `[izquierda, arriba, ancho, alto]` entre 0 y 1. `landscape` indica una foto horizontal. Al añadir más fotos al mismo producto, el visor muestra flechas, contador y permite deslizar con el dedo o navegar con las teclas izquierda/derecha. Mantener el `id` del producto para conservar las selecciones guardadas. Actualmente cada diseño tiene tres posiciones que repiten la foto disponible, a pedido del distribuidor. Reemplazar esas posiciones con los próximos ángulos sin duplicar la joya.
 
 Los diseños parcialmente fuera de las fotos y sin código legible no se registran como productos adicionales.
 
