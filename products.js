@@ -109,3 +109,13 @@ const originalCrops = {
 existingProducts.forEach(p=>{const photo=p.image.match(/_(\d+)\.jpg$/)[1];const position=Number(p.id.split('-').at(-1))-1;p.crop=originalCrops[photo][position];});
 // Tres posiciones por pieza; por ahora repiten la foto disponible.
 window.PRODUCTS = [...existingProducts,...newProducts].map(p=>({...p,images:Array.from({length:3},()=>({src:p.image,crop:p.crop,landscape:p.landscape,thumbnail:`assets/web/${p.id}-thumb.webp`,detail:`assets/web/${p.id}-detail.webp`}))}));
+// Solo estas dos piezas tienen una imagen mejorada como portada.
+for(const product of window.PRODUCTS){
+ if(!['AR-193030-1','AR-193030-3'].includes(product.id))continue;
+ product.images.forEach(photo=>{photo.label='Foto original';});
+ product.images.unshift({
+  src:product.image,label:'Imagen mejorada con IA',
+  thumbnail:`assets/web/${product.id}-enhanced-thumb.webp`,
+  detail:`assets/web/${product.id}-enhanced-detail.webp`
+ });
+}

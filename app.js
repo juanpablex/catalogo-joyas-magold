@@ -38,7 +38,7 @@ let activeProduct=null,photoIndex=0;
 function showPhoto(){
  const p=activeProduct,photo=p.images[photoIndex];
  $('#photo-stage').replaceChildren(photoFrame(p,photo,false));
- $('#photo-caption').textContent=`${p.name} · Código ${p.tag} · ${money(p.price)}`;
+ $('#photo-caption').textContent=`${p.name} · Código ${p.tag} · ${money(p.price)}${photo.label?` · ${photo.label}`:''}`;
  $('#photo-number').textContent=`${photoIndex+1} / ${p.images.length}`;
  $('#photo-controls').hidden=p.images.length<2;
  $('#original-photo').href=photo.src.replace('assets/','assets/web/').replace(/\.jpg$/,'.webp');
