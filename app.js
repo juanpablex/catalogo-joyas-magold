@@ -41,7 +41,7 @@ function showPhoto(){
  $('#photo-caption').textContent=`${p.name} · Código ${p.tag} · ${money(p.price)}${photo.label?` · ${photo.label}`:''}`;
  $('#photo-number').textContent=`${photoIndex+1} / ${p.images.length}`;
  $('#photo-controls').hidden=p.images.length<2;
- $('#original-photo').href=photo.src.replace('assets/','assets/web/').replace(/\.jpg$/,'.webp');
+ $('#original-photo').href=photo.original||photo.src.replace('assets/','assets/web/').replace(/\.jpg$/,'.webp');
 }
 function movePhoto(step){if(!activeProduct)return;photoIndex=(photoIndex+step+activeProduct.images.length)%activeProduct.images.length;showPhoto();}
 function openPhoto(p){activeProduct=p;photoIndex=0;showPhoto();$('#photo').showModal();}
