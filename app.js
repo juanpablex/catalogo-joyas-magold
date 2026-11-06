@@ -37,6 +37,7 @@ function photoFrame(p,photo,lazy=true){
 let activeProduct=null,photoIndex=0,modelReturn=null;
 function showPhoto(){
  const p=activeProduct,photo=p.images[photoIndex];
+ $('#photo').dataset.editorial=p.editorial?'true':'false';
  $('#photo-stage').replaceChildren(p.editorial?modelScene(photo,()=>{},false):photoFrame(p,photo,false));
  $('#product-info').hidden=!!p.editorial;
  $('#back-to-model').hidden=!!p.editorial||!modelReturn;
@@ -48,7 +49,7 @@ function showPhoto(){
   $('#product-add').setAttribute('aria-pressed',selected.has(p.id));
   $('#product-add').onclick=()=>{selected.has(p.id)?selected.delete(p.id):selected.add(p.id);persist();render();showPhoto();};
  }
- $('#photo-caption').textContent=p.editorial?`${p.name} · ${photoIndex+1} de ${p.images.length}`:`${p.name} · Código ${p.tag||'Por confirmar'} · ${money(p.price)}${photo.label?` · ${photo.label}`:''}`;
+ $('#photo-caption').textContent=p.editorial?`${p.name} · ${photoIndex+1} de ${p.images.length}`:photo.label||'Foto de la pieza';
  $('#photo-number').textContent=`${photoIndex+1} / ${p.images.length}`;
  $('#photo-controls').hidden=p.images.length<2;
  $('#original-photo').href=photo.original||photo.src.replace('assets/','assets/web/').replace(/\.jpg$/,'.webp');
