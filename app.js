@@ -84,7 +84,7 @@ function modelScene(photo,onExpand,lazy=true){
  expand.append(img);expand.onclick=onExpand;scene.append(expand);
  for(const spot of modelHotspots[photo.modelNumber]||[]){
   const product=products.find(p=>p.id===spot.id);if(!product)continue;
-  const button=document.createElement('button');button.className='jewel-hotspot';button.style.left=`${spot.x}%`;button.style.top=`${spot.y}%`;if(spot.w)button.style.width=`${spot.w}%`;if(spot.h)button.style.height=`${spot.h}%`;button.textContent='+';button.title=`${product.name} · ${money(product.price)}`;button.setAttribute('aria-label',`Ver ${product.name}, código ${product.tag}, ${money(product.price)}`);
+  const button=document.createElement('button');button.className='jewel-hotspot';button.style.left=`${spot.x}%`;button.style.top=`${spot.y}%`;if(spot.w)button.style.width=`${spot.w}%`;if(spot.h)button.style.height=`${spot.h}%`;button.textContent='';button.title=`${product.name} · ${money(product.price)}`;button.setAttribute('aria-label',`Ver ${product.name}, código ${product.tag}, ${money(product.price)}`);
   button.onclick=event=>{
    let target=product;
    // En móvil las áreas táctiles pueden tocarse: el centro más cercano decide.
@@ -128,7 +128,7 @@ function render(){
   const section=document.createElement('section');section.className='category-section';section.id=`section-${kind.replaceAll(' ','-')}`;
   const heading=document.createElement('h2');heading.textContent=categoryTitles[kind];section.append(heading);
   if(modelSets[kind]&&!query){
-   const intro=document.createElement('p');intro.className='category-intro';intro.textContent=kind==='Anillos'?'Toca el signo + sobre un anillo para ver su información. Desliza para explorar las 12 fotos.':'Toca el signo + sobre el collar para ver su información, precio y fotos.';section.append(intro,modelGallery(kind));
+   const intro=document.createElement('p');intro.className='category-intro';intro.textContent=kind==='Anillos'?'Toca un anillo para ver su información. Desliza para explorar las 12 fotos.':'Toca el collar para ver su información, precio y fotos.';section.append(intro,modelGallery(kind));
    const subtitle=document.createElement('h3');subtitle.className='individual-title';subtitle.textContent=kind==='Anillos'?'Elige tu anillo':'Elige tu collar';section.append(subtitle);
   }
   const grid=document.createElement('div');grid.className='grid';grid.append(...matches.map(item=>item.card));section.append(grid);sections.push(section);
@@ -159,5 +159,6 @@ $('#photo-stage').addEventListener('touchend',e=>{if(!touchStart||!activeProduct
 $('#send').onclick=()=>{if(chosen().length&&/^[1-9]\d{7,14}$/.test(config.whatsapp))window.open(`https://wa.me/${config.whatsapp}?text=${encodeURIComponent(message())}`,'_blank','noopener,noreferrer');};
 $('#copy').onclick=async()=>{try{await navigator.clipboard.writeText(message());$('#feedback').textContent='Selección copiada.';}catch{$('#feedback').textContent=message();$('#feedback').style.whiteSpace='pre-wrap';}};
 render();
+
 
 

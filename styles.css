@@ -41,8 +41,9 @@ nav{align-items:center}nav button{min-height:44px}
 .model-scene{position:relative;min-width:0;scroll-snap-align:start;overflow:hidden;border-radius:12px}
 .model-scene .model-photo{display:block;width:100%}
 .model-scene:hover img{transform:none}
-.jewel-hotspot{position:absolute;transform:translate(-50%,-50%);width:15%;height:8%;min-width:44px;min-height:44px;padding:0;border:1px solid #fff9;border-radius:50%;background:#fff2;box-shadow:0 0 0 3px #332b2915;color:#fff;font-size:22px;text-shadow:0 1px 4px #332b29}
-.jewel-hotspot:hover,.jewel-hotspot:focus-visible{background:#86632f88;border-color:white}
+.jewel-hotspot{position:absolute;transform:translate(-50%,-50%);width:15%;height:8%;min-width:44px;min-height:44px;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+.jewel-hotspot:hover{background:transparent;border:0}
+.jewel-hotspot:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 #photo-stage>.model-scene{width:min(100%,42vh);width:min(100%,42dvh);margin:12px auto}
 #product-info{padding:12px 0;border-bottom:1px solid var(--line)}
 #product-info[hidden]{display:none}
