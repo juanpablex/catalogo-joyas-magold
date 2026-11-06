@@ -1,5 +1,5 @@
 const config=window.CATALOGO_CONFIG;
-const categoryOrder=['Aretes','Aretes grandes','Argollas','Anillos','Cadenas','Dijes'];
+const categoryOrder=['Aretes','Aretes grandes','Argollas','Anillos','Manillas','Cadenas','Dijes'];
 const products=[...window.PRODUCTS].sort((a,b)=>categoryOrder.indexOf(a.category)-categoryOrder.indexOf(b.category));
 let selected=new Set();
 try{const saved=JSON.parse(localStorage.getItem('joyas-selection')||'[]');if(Array.isArray(saved))selected=new Set(saved.filter(id=>products.some(p=>p.id===id)));}catch{}
@@ -11,7 +11,7 @@ function updateHeaderHeight(){document.documentElement.style.setProperty('--head
 updateHeaderHeight();
 if('ResizeObserver' in window)new ResizeObserver(updateHeaderHeight).observe(catalogHeader);
 else window.addEventListener('resize',updateHeaderHeight);
-const money=n=>`${n.toLocaleString('es-BO')} Bs`;
+const money=n=>n==null?'Consultar precio':`${n.toLocaleString('es-BO')} Bs`;
 // Cargar cada foto cuando se acerca a la pantalla evita descargar todo el estuche al entrar.
 const photoLoader='IntersectionObserver' in window?new IntersectionObserver(entries=>{entries.forEach(({isIntersecting,target})=>{if(!isIntersecting)return;if(target.dataset.href)target.setAttribute('href',target.dataset.href);if(target.dataset.background)target.style.backgroundImage=`url("${target.dataset.background}")`;photoLoader.unobserve(target);});},{rootMargin:'300px'}):null;
 function loadPhoto(node){if(photoLoader)photoLoader.observe(node);else if(node.dataset.href)node.setAttribute('href',node.dataset.href);else node.style.backgroundImage=`url("${node.dataset.background}")`;}
@@ -42,13 +42,13 @@ function showPhoto(){
  $('#back-to-model').hidden=!!p.editorial||!modelReturn;
  if(!p.editorial){
   $('#product-name').textContent=p.name;
-  $('#product-meta').textContent=`${categoryTitles[p.category]||p.category} · Código ${p.tag} · Ref. ${p.id}`;
+  $('#product-meta').textContent=`${categoryTitles[p.category]||p.category} · Código ${p.tag||'Por confirmar'} · Ref. ${p.id}`;
   $('#product-price').textContent=money(p.price);
   $('#product-add').textContent=selected.has(p.id)?'✓ En tu selección':'＋ Agregar a mi selección';
   $('#product-add').setAttribute('aria-pressed',selected.has(p.id));
   $('#product-add').onclick=()=>{selected.has(p.id)?selected.delete(p.id):selected.add(p.id);persist();render();showPhoto();};
  }
- $('#photo-caption').textContent=p.editorial?`${p.name} · ${photoIndex+1} de ${p.images.length}`:`${p.name} · Código ${p.tag} · ${money(p.price)}${photo.label?` · ${photo.label}`:''}`;
+ $('#photo-caption').textContent=p.editorial?`${p.name} · ${photoIndex+1} de ${p.images.length}`:`${p.name} · Código ${p.tag||'Por confirmar'} · ${money(p.price)}${photo.label?` · ${photo.label}`:''}`;
  $('#photo-number').textContent=`${photoIndex+1} / ${p.images.length}`;
  $('#photo-controls').hidden=p.images.length<2;
  $('#original-photo').href=photo.original||photo.src.replace('assets/','assets/web/').replace(/\.jpg$/,'.webp');
@@ -75,7 +75,21 @@ const modelHotspots={
  31:[{id:'AN-231535-6',x:29,y:50},{id:'AN-231535-4',x:44,y:45}],
  41:[{id:'AN-231644-4',x:43,y:39},{id:'AN-231644-5',x:62,y:35}]
 };
-const categoryTitles={Cadenas:'Collares',Anillos:'Anillos',Aretes:'Aretes','Aretes grandes':'Aretes grandes',Argollas:'Argollas',Dijes:'Dijes'};
+const braceletSpots={
+ 1:[['MA-malla',16,70,48,12]],
+ 3:[['MA-malla',43,51,40,15],['MA-perlas-alargadas',47,88,40,15]],
+ 5:[['MA-malla',34,34,35,12],['MA-perlas-alargadas',91,79,18,32]],
+ 6:[['MA-medallones',22,62,35,15],['MA-rectangulos',74,91,40,12]],
+ 7:[['MA-medallones',8,83,22,22],['MA-rectangulos',55,70,35,12]],
+ 8:[['MA-malla',43,57,35,15],['MA-perlas-alargadas',36,86,40,15]],
+ 9:[['MA-ovalos',55,74,40,12]],
+ 17:[['MA-medallones',17,38,20,25],['MA-rectangulos',28,94,40,12]],
+ 23:[['MA-medallones',45,71,40,12],['MA-medallones',96,68,16,24]],
+ 31:[['MA-medallones',51,81,40,12]],
+ 41:[['MA-perlitas-barras',63,77,40,14]]
+};
+for(const [number,spots] of Object.entries(braceletSpots))for(const [id,x,y,w,h] of spots)modelHotspots[number].push({id,x,y,w,h});
+const categoryTitles={Cadenas:'Collares',Anillos:'Anillos',Manillas:'Manillas',Aretes:'Aretes','Aretes grandes':'Aretes grandes',Argollas:'Argollas',Dijes:'Dijes'};
 function modelPhoto(number){const base=`assets/web/models/WA${String(number).padStart(4,'0')}`;return {modelNumber:number,src:`${base}-detail.webp`,original:`${base}-detail.webp`,thumbnail:`${base}-preview.webp`,detail:`${base}-detail.webp`};}
 function modelScene(photo,onExpand,lazy=true){
  const scene=document.createElement('div');scene.className='model-scene';
@@ -84,7 +98,7 @@ function modelScene(photo,onExpand,lazy=true){
  expand.append(img);expand.onclick=onExpand;scene.append(expand);
  for(const spot of modelHotspots[photo.modelNumber]||[]){
   const product=products.find(p=>p.id===spot.id);if(!product)continue;
-  const button=document.createElement('button');button.className='jewel-hotspot';button.style.left=`${spot.x}%`;button.style.top=`${spot.y}%`;if(spot.w)button.style.width=`${spot.w}%`;if(spot.h)button.style.height=`${spot.h}%`;button.textContent='';button.title=`${product.name} · ${money(product.price)}`;button.setAttribute('aria-label',`Ver ${product.name}, código ${product.tag}, ${money(product.price)}`);
+  const button=document.createElement('button');button.className='jewel-hotspot';button.style.left=`${spot.x}%`;button.style.top=`${spot.y}%`;if(spot.w)button.style.width=`${spot.w}%`;if(spot.h)button.style.height=`${spot.h}%`;button.textContent='';button.title=`${product.name} · ${money(product.price)}`;button.setAttribute('aria-label',`Ver ${product.name}, código ${product.tag||'por confirmar'}, ${money(product.price)}`);
   button.onclick=event=>{
    let target=product;
    // En móvil las áreas táctiles pueden tocarse: el centro más cercano decide.
@@ -109,26 +123,26 @@ function persist(){try{localStorage.setItem('joyas-selection',JSON.stringify([..
 function render(){
  photoLoader?.disconnect();
  const query=$('#search').value.trim().toLocaleLowerCase('es');
- const shown=products.filter(p=>(category==='Todas'||p.category===category)&&`${p.name} ${p.tag} ${p.id}`.toLocaleLowerCase('es').includes(query));
+ const shown=products.filter(p=>(category==='Todas'||p.category===category)&&`${p.name} ${p.tag||'Por confirmar'} ${p.id}`.toLocaleLowerCase('es').includes(query));
  const cards=shown.map(p=>{
   const article=document.createElement('article');article.className='card';
   const image=document.createElement('button');image.className='image-button';image.setAttribute('aria-label',`Ver foto de ${p.name}`);
   const frame=photoFrame(p,p.images[0]);
   image.append(frame);image.onclick=()=>openPhoto(p);
   const heading=document.createElement('h3');heading.textContent=p.name;
-  const meta=document.createElement('p');meta.className='meta';meta.textContent=`${p.category} · Código ${p.tag}`;
+  const meta=document.createElement('p');meta.className='meta';meta.textContent=`${p.category} · Código ${p.tag||'Por confirmar'}`;
   const price=document.createElement('p');price.className='price';price.textContent=p.price===null?'Consultar precio':money(p.price);
   const add=document.createElement('button');add.className=`add ${selected.has(p.id)?'selected':''}`;add.textContent=selected.has(p.id)?'✓ En tu selección':'＋ Agregar a mi selección';add.setAttribute('aria-pressed',selected.has(p.id));add.onclick=()=>{selected.has(p.id)?selected.delete(p.id):selected.add(p.id);persist();render();};
   article.append(image,heading,meta,price,add);return article;
  });
  const sections=[];
- for(const kind of ['Cadenas','Anillos','Aretes','Aretes grandes','Argollas','Dijes']){
+ for(const kind of ['Cadenas','Anillos','Manillas','Aretes','Aretes grandes','Argollas','Dijes']){
   const matches=shown.map((p,index)=>({p,card:cards[index]})).filter(item=>item.p.category===kind);
   if(!matches.length)continue;
   const section=document.createElement('section');section.className='category-section';section.id=`section-${kind.replaceAll(' ','-')}`;
   const heading=document.createElement('h2');heading.textContent=categoryTitles[kind];section.append(heading);
   if(modelSets[kind]&&!query){
-   const intro=document.createElement('p');intro.className='category-intro';intro.textContent=kind==='Anillos'?'Toca un anillo para ver su información. Desliza para explorar las 12 fotos.':'Toca el collar para ver su información, precio y fotos.';section.append(intro,modelGallery(kind));
+   const intro=document.createElement('p');intro.className='category-intro';intro.textContent=kind==='Anillos'?'Toca un anillo o una manilla para ver su información. Desliza para explorar las 12 fotos.':'Toca el collar para ver su información, precio y fotos.';section.append(intro,modelGallery(kind));
    const subtitle=document.createElement('h3');subtitle.className='individual-title';subtitle.textContent=kind==='Anillos'?'Elige tu anillo':'Elige tu collar';section.append(subtitle);
   }
   const grid=document.createElement('div');grid.className='grid';grid.append(...matches.map(item=>item.card));section.append(grid);sections.push(section);
@@ -137,9 +151,9 @@ function render(){
  $('#results').textContent=shown.length?`${shown.length} diseños · Disponibilidad a confirmar por chat`:'No encontramos diseños con esa búsqueda.';persist();
 }
 function chosen(){return products.filter(p=>selected.has(p.id));}
-function message(){return ['Hola, me interesan estas joyas Magold:',...chosen().map(p=>`• ${p.name} | Etiqueta ${p.tag} | Ref. ${p.id}${p.price===null?'':` | ${money(p.price)}`}`),'¿Me confirmas precio, disponibilidad y entrega?'].join('\n');}
+function message(){return ['Hola, me interesan estas joyas Magold:',...chosen().map(p=>`• ${p.name} | Etiqueta ${p.tag||'Por confirmar'} | Ref. ${p.id}${p.price===null?'':` | ${money(p.price)}`}`),'¿Me confirmas precio, disponibilidad y entrega?'].join('\n');}
 function renderCart(){
- const items=chosen();$('#cart-items').replaceChildren(...items.map(p=>{const row=document.createElement('div');row.className='cart-row';const text=document.createElement('p');text.textContent=`${p.name} · Código ${p.tag} · ${money(p.price)}`;const remove=document.createElement('button');remove.textContent='Quitar';remove.setAttribute('aria-label',`Quitar ${p.name}`);remove.onclick=()=>{selected.delete(p.id);persist();render();renderCart();};row.append(text,remove);return row;}));
+ const items=chosen();$('#cart-items').replaceChildren(...items.map(p=>{const row=document.createElement('div');row.className='cart-row';const text=document.createElement('p');text.textContent=`${p.name} · Código ${p.tag||'Por confirmar'} · ${money(p.price)}`;const remove=document.createElement('button');remove.textContent='Quitar';remove.setAttribute('aria-label',`Quitar ${p.name}`);remove.onclick=()=>{selected.delete(p.id);persist();render();renderCart();};row.append(text,remove);return row;}));
  if(!items.length)$('#cart-items').textContent='Tu selección está vacía. Explora el catálogo para agregar tus favoritos.';
  $('#total').textContent=items.length&&items.every(p=>p.price!==null)?`Total: ${money(items.reduce((s,p)=>s+p.price,0))}`:'';
  const valid=/^[1-9]\d{7,14}$/.test(config.whatsapp);
@@ -159,6 +173,7 @@ $('#photo-stage').addEventListener('touchend',e=>{if(!touchStart||!activeProduct
 $('#send').onclick=()=>{if(chosen().length&&/^[1-9]\d{7,14}$/.test(config.whatsapp))window.open(`https://wa.me/${config.whatsapp}?text=${encodeURIComponent(message())}`,'_blank','noopener,noreferrer');};
 $('#copy').onclick=async()=>{try{await navigator.clipboard.writeText(message());$('#feedback').textContent='Selección copiada.';}catch{$('#feedback').textContent=message();$('#feedback').style.whiteSpace='pre-wrap';}};
 render();
+
 
 
 

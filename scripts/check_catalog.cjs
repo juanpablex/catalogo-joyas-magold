@@ -18,10 +18,10 @@ const context={console,Map,Set,Math,Number,document:{
  querySelectorAll(){return []},createElement(){return new Element()},createElementNS(){return new Element()},documentElement:new Element()
 },window:{CATALOGO_CONFIG:{whatsapp:'59178367871'},addEventListener(){}},localStorage:{getItem(){return '[]'},setItem(){}}};
 vm.createContext(context);
-for(const path of ['products.js','gallery-photos.js','app.js'])vm.runInContext(fs.readFileSync(path,'utf8'),context);
+for(const path of ['products.js','bracelets.js','gallery-photos.js','app.js'])vm.runInContext(fs.readFileSync(path,'utf8'),context);
 vm.runInContext(`
- if(products.length!==76)throw Error('Cambió el inventario');
- if(document.querySelector('#products').children.length!==6)throw Error('Faltan secciones');
+ if(products.length!==82)throw Error('Cambió el inventario');
+ if(document.querySelector('#products').children.length!==7)throw Error('Faltan secciones');
  for(const [number,spots] of Object.entries(modelHotspots)){
   const scene=modelScene(modelPhoto(Number(number)),()=>{});
   if(scene.children.length!==spots.length+1)throw Error('Faltan zonas');
@@ -42,8 +42,19 @@ vm.runInContext(`
  if(!message().includes('AN-231644-4'))throw Error('Falta en WhatsApp');
  document.querySelector('#product-add').onclick();
  if(selected.has('AN-231644-4'))throw Error('No quita de selección');
+ const wrist=modelScene(modelPhoto(41),()=>{});
+ wrist.children.at(-1).onclick();
+ if(activeProduct.id!=='MA-perlitas-barras')throw Error('La manilla abre otro producto');
+ if(document.querySelector('#product-price').textContent!=='Consultar precio')throw Error('Inventó precio');
+ document.querySelector('#product-add').onclick();
+ renderCart();
+ if(!message().includes('MA-perlitas-barras')||message().includes('null'))throw Error('Consulta de manilla incorrecta');
+ if(document.querySelector('#total').textContent!=='')throw Error('Calculó un total sin precio');
+ category='Manillas';render();
+ if(document.querySelector('#products').children[0].children.at(-1).children.length!==6)throw Error('Faltan manillas');
  category='Anillos';render();
  if(document.querySelector('#products').children.length!==1)throw Error('Filtro incorrecto');
 `,context);
 assert.equal(nodes.get('#photo').open,true);
 console.log('OK: zonas en las 15 fotos, fichas, precios, volver a modelo, selección, WhatsApp y filtro.');
+
