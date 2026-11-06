@@ -34,27 +34,74 @@ function photoFrame(p,photo,lazy=true){
  }
  return frame;
 }
-let activeProduct=null,photoIndex=0;
+let activeProduct=null,photoIndex=0,modelReturn=null;
 function showPhoto(){
  const p=activeProduct,photo=p.images[photoIndex];
- $('#photo-stage').replaceChildren(photoFrame(p,photo,false));
+ $('#photo-stage').replaceChildren(p.editorial?modelScene(photo,()=>{},false):photoFrame(p,photo,false));
+ $('#product-info').hidden=!!p.editorial;
+ $('#back-to-model').hidden=!!p.editorial||!modelReturn;
+ if(!p.editorial){
+  $('#product-name').textContent=p.name;
+  $('#product-meta').textContent=`${categoryTitles[p.category]||p.category} · Código ${p.tag} · Ref. ${p.id}`;
+  $('#product-price').textContent=money(p.price);
+  $('#product-add').textContent=selected.has(p.id)?'✓ En tu selección':'＋ Agregar a mi selección';
+  $('#product-add').setAttribute('aria-pressed',selected.has(p.id));
+  $('#product-add').onclick=()=>{selected.has(p.id)?selected.delete(p.id):selected.add(p.id);persist();render();showPhoto();};
+ }
  $('#photo-caption').textContent=p.editorial?`${p.name} · ${photoIndex+1} de ${p.images.length}`:`${p.name} · Código ${p.tag} · ${money(p.price)}${photo.label?` · ${photo.label}`:''}`;
  $('#photo-number').textContent=`${photoIndex+1} / ${p.images.length}`;
  $('#photo-controls').hidden=p.images.length<2;
  $('#original-photo').href=photo.original||photo.src.replace('assets/','assets/web/').replace(/\.jpg$/,'.webp');
 }
 function movePhoto(step){if(!activeProduct)return;photoIndex=(photoIndex+step+activeProduct.images.length)%activeProduct.images.length;showPhoto();}
-function openPhoto(p){activeProduct=p;photoIndex=0;showPhoto();$('#photo').showModal();}
+function openPhoto(p,origin=null){modelReturn=origin;activeProduct=p;photoIndex=0;showPhoto();if(!$('#photo').open)$('#photo').showModal();}
+function returnToModel(){if(!modelReturn)return;const {kind,number}=modelReturn;activeProduct={editorial:true,name:`${categoryTitles[kind]} · Fotos modeladas`,images:modelSets[kind].map(modelPhoto)};photoIndex=modelSets[kind].indexOf(number);showPhoto();}
 const modelSets={Cadenas:[0,2,4],Anillos:[1,3,5,6,7,8,9,10,17,23,31,41]};
+// Coordenadas sobre la foto completa, en porcentajes. Solo piezas identificadas.
+const modelHotspots={
+ 0:[{id:'CA-232016-1',x:53,y:64,w:50,h:18}],
+ 2:[{id:'CA-231755-1',x:53,y:64,w:50,h:18}],
+ 4:[{id:'CA-231811-1',x:53,y:64,w:50,h:18}],
+ 1:[{id:'AN-231644-2',x:35,y:26},{id:'AN-231535-3',x:43,y:25},{id:'AN-231535-1',x:52,y:31}],
+ 3:[{id:'AN-231644-2',x:53,y:22},{id:'AN-231644-6',x:61,y:22},{id:'AN-231644-1',x:68,y:26},{id:'AN-231535-1',x:18,y:66},{id:'AN-231535-2',x:32,y:57}],
+ 5:[{id:'AN-231644-2',x:39,y:4},{id:'AN-231644-6',x:49,y:1},{id:'AN-231644-1',x:60,y:1},{id:'AN-231535-1',x:40,y:52},{id:'AN-231535-2',x:50,y:36}],
+ 6:[{id:'AN-231535-6',x:25,y:33},{id:'AN-231535-5',x:37,y:32},{id:'AN-231535-7',x:49,y:54},{id:'AN-231535-5',x:57,y:50}],
+ 7:[{id:'AN-231535-6',x:19,y:44},{id:'AN-231535-5',x:29,y:45},{id:'AN-231535-7',x:58,y:29},{id:'AN-231644-3',x:77,y:35}],
+ 8:[{id:'AN-231644-2',x:47,y:26},{id:'AN-231535-3',x:53,y:26},{id:'AN-231535-1',x:61,y:31},{id:'AN-231644-1',x:15,y:53}],
+ 9:[{id:'AN-231644-7',x:50,y:39}],
+ 10:[{id:'AN-231644-4',x:35,y:49},{id:'AN-231644-5',x:60,y:50}],
+ 17:[{id:'AN-231535-6',x:51,y:13},{id:'AN-231535-5',x:64,y:21},{id:'AN-231535-7',x:48,y:48},{id:'AN-231535-5',x:58,y:50}],
+ 23:[{id:'AN-231535-6',x:30,y:44},{id:'AN-231535-4',x:46,y:41}],
+ 31:[{id:'AN-231535-6',x:29,y:50},{id:'AN-231535-4',x:44,y:45}],
+ 41:[{id:'AN-231644-4',x:43,y:39},{id:'AN-231644-5',x:62,y:35}]
+};
 const categoryTitles={Cadenas:'Collares',Anillos:'Anillos',Aretes:'Aretes','Aretes grandes':'Aretes grandes',Argollas:'Argollas',Dijes:'Dijes'};
-function modelPhoto(number){const base=`assets/web/models/WA${String(number).padStart(4,'0')}`;return {src:`${base}-detail.webp`,original:`${base}-detail.webp`,thumbnail:`${base}-preview.webp`,detail:`${base}-detail.webp`};}
+function modelPhoto(number){const base=`assets/web/models/WA${String(number).padStart(4,'0')}`;return {modelNumber:number,src:`${base}-detail.webp`,original:`${base}-detail.webp`,thumbnail:`${base}-preview.webp`,detail:`${base}-detail.webp`};}
+function modelScene(photo,onExpand,lazy=true){
+ const scene=document.createElement('div');scene.className='model-scene';
+ const expand=document.createElement('button');expand.className='model-photo';expand.setAttribute('aria-label','Ampliar foto modelada');
+ const img=document.createElement('img');img.src=lazy?photo.thumbnail:photo.detail;img.alt='Joyas mostradas en modelo';img.loading=lazy?'lazy':'eager';img.decoding='async';img.width=480;img.height=640;
+ expand.append(img);expand.onclick=onExpand;scene.append(expand);
+ for(const spot of modelHotspots[photo.modelNumber]||[]){
+  const product=products.find(p=>p.id===spot.id);if(!product)continue;
+  const button=document.createElement('button');button.className='jewel-hotspot';button.style.left=`${spot.x}%`;button.style.top=`${spot.y}%`;if(spot.w)button.style.width=`${spot.w}%`;if(spot.h)button.style.height=`${spot.h}%`;button.textContent='+';button.title=`${product.name} · ${money(product.price)}`;button.setAttribute('aria-label',`Ver ${product.name}, código ${product.tag}, ${money(product.price)}`);
+  button.onclick=event=>{
+   let target=product;
+   // En móvil las áreas táctiles pueden tocarse: el centro más cercano decide.
+   if(event?.detail&&Number.isFinite(event.clientX)){
+    const rect=scene.getBoundingClientRect();const x=(event.clientX-rect.left)/rect.width*100,y=(event.clientY-rect.top)/rect.height*100;
+    const closest=[...modelHotspots[photo.modelNumber]].sort((a,b)=>Math.hypot((a.x-x)*rect.width,(a.y-y)*rect.height)-Math.hypot((b.x-x)*rect.width,(b.y-y)*rect.height))[0];target=products.find(p=>p.id===closest.id)||product;
+   }
+   const kind=Object.keys(modelSets).find(key=>modelSets[key].includes(photo.modelNumber));openPhoto(target,{kind,number:photo.modelNumber});
+  };scene.append(button);
+ }
+ return scene;
+}
 function modelGallery(kind){
  const gallery=document.createElement('div');gallery.className='model-gallery';gallery.setAttribute('aria-label',`Fotos modeladas de ${categoryTitles[kind]}`);
  const photos=modelSets[kind].map(modelPhoto);
  photos.forEach((photo,index)=>{
-  const button=document.createElement('button');button.className='model-photo';button.setAttribute('aria-label',`Ampliar foto ${index+1} de ${categoryTitles[kind]}`);
-  const img=document.createElement('img');img.src=photo.thumbnail;img.alt=kind==='Anillos'?'Anillos mostrados en manos de modelo':'Collar mostrado en una modelo';img.loading='lazy';img.decoding='async';img.width=480;img.height=640;
-  button.append(img);button.onclick=()=>{activeProduct={editorial:true,name:`${categoryTitles[kind]} · Fotos modeladas`,images:photos};photoIndex=index;showPhoto();$('#photo').showModal();};gallery.append(button);
+  const scene=modelScene(photo,()=>{activeProduct={editorial:true,name:`${categoryTitles[kind]} · Fotos modeladas`,images:photos};photoIndex=index;showPhoto();$('#photo').showModal();});gallery.append(scene);
  });
  return gallery;
 }
@@ -81,7 +128,7 @@ function render(){
   const section=document.createElement('section');section.className='category-section';section.id=`section-${kind.replaceAll(' ','-')}`;
   const heading=document.createElement('h2');heading.textContent=categoryTitles[kind];section.append(heading);
   if(modelSets[kind]&&!query){
-   const intro=document.createElement('p');intro.className='category-intro';intro.textContent=kind==='Anillos'?'12 fotos de anillos en manos de modelo. Desliza para verlas o toca una para ampliarla.':'Descubre cómo lucen los collares puestos. Desliza las fotos o toca una para verla en grande.';section.append(intro,modelGallery(kind));
+   const intro=document.createElement('p');intro.className='category-intro';intro.textContent=kind==='Anillos'?'Toca el signo + sobre un anillo para ver su información. Desliza para explorar las 12 fotos.':'Toca el signo + sobre el collar para ver su información, precio y fotos.';section.append(intro,modelGallery(kind));
    const subtitle=document.createElement('h3');subtitle.className='individual-title';subtitle.textContent=kind==='Anillos'?'Elige tu anillo':'Elige tu collar';section.append(subtitle);
   }
   const grid=document.createElement('div');grid.className='grid';grid.append(...matches.map(item=>item.card));section.append(grid);sections.push(section);
@@ -104,6 +151,7 @@ $('#search').oninput=render;
 $('#open-cart').onclick=()=>{renderCart();$('#feedback').textContent='';$('#cart').showModal();};
 $('#close-cart').onclick=()=>$('#cart').close();$('#close-photo').onclick=()=>$('#photo').close();
 $('#previous-photo').onclick=()=>movePhoto(-1);$('#next-photo').onclick=()=>movePhoto(1);
+$('#back-to-model').onclick=returnToModel;
 $('#photo').addEventListener('keydown',e=>{if(e.key==='ArrowLeft')movePhoto(-1);if(e.key==='ArrowRight')movePhoto(1);});
 let touchStart=null;
 $('#photo-stage').addEventListener('touchstart',e=>{touchStart={x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY};},{passive:true});
@@ -111,4 +159,5 @@ $('#photo-stage').addEventListener('touchend',e=>{if(!touchStart||!activeProduct
 $('#send').onclick=()=>{if(chosen().length&&/^[1-9]\d{7,14}$/.test(config.whatsapp))window.open(`https://wa.me/${config.whatsapp}?text=${encodeURIComponent(message())}`,'_blank','noopener,noreferrer');};
 $('#copy').onclick=async()=>{try{await navigator.clipboard.writeText(message());$('#feedback').textContent='Selección copiada.';}catch{$('#feedback').textContent=message();$('#feedback').style.whiteSpace='pre-wrap';}};
 render();
+
 

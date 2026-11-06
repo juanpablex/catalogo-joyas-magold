@@ -9,11 +9,18 @@ La imagen WA0004 se usa como inspiración en la bienvenida, sin asociarla a un c
 Queda por confirmar antes de asociar o publicar como productos:
 
 - Pulseras: códigos, precios y correspondencia con las fotos modeladas y las del espejo (WA0011–WA0015, WA0018, WA0027, WA0035 y WA0039).
-- Cadenas modeladas WA0000, WA0002, WA0004 y PNG adicional: código de cada diseño.
-- Los otros anillos modelados: confirmar códigos para evitar asociar una pieza similar.
+- PNG adicional: pendiente de incorporar.
 - La pieza central de WA0034 dice REF. 98; confirmar si corresponde al código 198 del estuche.
 - Argollas WA0029: confirmar código.
 
 Las fotos nuevas del estuche y las tomas similares se conservan en la carpeta de origen; se mantiene la foto existente del estuche en cada producto para no acumular duplicados.
 
 Para regenerar los archivos optimizados: `python scripts/prepare_gallery.py "D:\ia\joyas-imagenes"`.
+
+## Fotos interactivas
+
+Las tres cadenas modeladas se asociaron por comparación visual con las piezas del estuche: WA0000 → 282 (lisa), WA0002 → 292 (torcida), WA0004 → 803 (eslabones rectangulares).
+
+Las zonas de anillos están definidas por foto y posición en `modelHotspots`, dentro de `app.js`. Se usa la referencia interna completa, porque hay dos anillos distintos con etiqueta 136. Los puntos se pueden ajustar sin cambiar precios ni inventario. Las piezas cortadas o desenfocadas de fondo no deben usarse para inferir productos nuevos.
+
+Para comprobar fichas y selección desde PowerShell: `Get-Content scripts/check_catalog.cjs -Raw | node -`.
