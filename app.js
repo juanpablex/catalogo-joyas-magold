@@ -38,19 +38,32 @@ let activeProduct=null,photoIndex=0;
 function showPhoto(){
  const p=activeProduct,photo=p.images[photoIndex];
  $('#photo-stage').replaceChildren(photoFrame(p,photo,false));
- $('#photo-caption').textContent=`${p.name} · Código ${p.tag} · ${money(p.price)}${photo.label?` · ${photo.label}`:''}`;
+ $('#photo-caption').textContent=p.editorial?`${p.name} · ${photoIndex+1} de ${p.images.length}`:`${p.name} · Código ${p.tag} · ${money(p.price)}${photo.label?` · ${photo.label}`:''}`;
  $('#photo-number').textContent=`${photoIndex+1} / ${p.images.length}`;
  $('#photo-controls').hidden=p.images.length<2;
  $('#original-photo').href=photo.original||photo.src.replace('assets/','assets/web/').replace(/\.jpg$/,'.webp');
 }
 function movePhoto(step){if(!activeProduct)return;photoIndex=(photoIndex+step+activeProduct.images.length)%activeProduct.images.length;showPhoto();}
 function openPhoto(p){activeProduct=p;photoIndex=0;showPhoto();$('#photo').showModal();}
+const modelSets={Cadenas:[0,2,4],Anillos:[1,3,5,6,7,8,9,10,17,23,31,41]};
+const categoryTitles={Cadenas:'Collares',Anillos:'Anillos',Aretes:'Aretes','Aretes grandes':'Aretes grandes',Argollas:'Argollas',Dijes:'Dijes'};
+function modelPhoto(number){const base=`assets/web/models/WA${String(number).padStart(4,'0')}`;return {src:`${base}-detail.webp`,original:`${base}-detail.webp`,thumbnail:`${base}-preview.webp`,detail:`${base}-detail.webp`};}
+function modelGallery(kind){
+ const gallery=document.createElement('div');gallery.className='model-gallery';gallery.setAttribute('aria-label',`Fotos modeladas de ${categoryTitles[kind]}`);
+ const photos=modelSets[kind].map(modelPhoto);
+ photos.forEach((photo,index)=>{
+  const button=document.createElement('button');button.className='model-photo';button.setAttribute('aria-label',`Ampliar foto ${index+1} de ${categoryTitles[kind]}`);
+  const img=document.createElement('img');img.src=photo.thumbnail;img.alt=kind==='Anillos'?'Anillos mostrados en manos de modelo':'Collar mostrado en una modelo';img.loading='lazy';img.decoding='async';img.width=480;img.height=640;
+  button.append(img);button.onclick=()=>{activeProduct={editorial:true,name:`${categoryTitles[kind]} · Fotos modeladas`,images:photos};photoIndex=index;showPhoto();$('#photo').showModal();};gallery.append(button);
+ });
+ return gallery;
+}
 function persist(){try{localStorage.setItem('joyas-selection',JSON.stringify([...selected]));}catch{} $('#count').textContent=selected.size;}
 function render(){
  photoLoader?.disconnect();
  const query=$('#search').value.trim().toLocaleLowerCase('es');
  const shown=products.filter(p=>(category==='Todas'||p.category===category)&&`${p.name} ${p.tag} ${p.id}`.toLocaleLowerCase('es').includes(query));
- $('#products').replaceChildren(...shown.map(p=>{
+ const cards=shown.map(p=>{
   const article=document.createElement('article');article.className='card';
   const image=document.createElement('button');image.className='image-button';image.setAttribute('aria-label',`Ver foto de ${p.name}`);
   const frame=photoFrame(p,p.images[0]);
@@ -60,7 +73,20 @@ function render(){
   const price=document.createElement('p');price.className='price';price.textContent=p.price===null?'Consultar precio':money(p.price);
   const add=document.createElement('button');add.className=`add ${selected.has(p.id)?'selected':''}`;add.textContent=selected.has(p.id)?'✓ En tu selección':'＋ Agregar a mi selección';add.setAttribute('aria-pressed',selected.has(p.id));add.onclick=()=>{selected.has(p.id)?selected.delete(p.id):selected.add(p.id);persist();render();};
   article.append(image,heading,meta,price,add);return article;
- }));
+ });
+ const sections=[];
+ for(const kind of ['Cadenas','Anillos','Aretes','Aretes grandes','Argollas','Dijes']){
+  const matches=shown.map((p,index)=>({p,card:cards[index]})).filter(item=>item.p.category===kind);
+  if(!matches.length)continue;
+  const section=document.createElement('section');section.className='category-section';section.id=`section-${kind.replaceAll(' ','-')}`;
+  const heading=document.createElement('h2');heading.textContent=categoryTitles[kind];section.append(heading);
+  if(modelSets[kind]&&!query){
+   const intro=document.createElement('p');intro.className='category-intro';intro.textContent=kind==='Anillos'?'12 fotos de anillos en manos de modelo. Desliza para verlas o toca una para ampliarla.':'Descubre cómo lucen los collares puestos. Desliza las fotos o toca una para verla en grande.';section.append(intro,modelGallery(kind));
+   const subtitle=document.createElement('h3');subtitle.className='individual-title';subtitle.textContent=kind==='Anillos'?'Elige tu anillo':'Elige tu collar';section.append(subtitle);
+  }
+  const grid=document.createElement('div');grid.className='grid';grid.append(...matches.map(item=>item.card));section.append(grid);sections.push(section);
+ }
+ $('#products').replaceChildren(...sections);
  $('#results').textContent=shown.length?`${shown.length} diseños · Disponibilidad a confirmar por chat`:'No encontramos diseños con esa búsqueda.';persist();
 }
 function chosen(){return products.filter(p=>selected.has(p.id));}
@@ -85,3 +111,4 @@ $('#photo-stage').addEventListener('touchend',e=>{if(!touchStart||!activeProduct
 $('#send').onclick=()=>{if(chosen().length&&/^[1-9]\d{7,14}$/.test(config.whatsapp))window.open(`https://wa.me/${config.whatsapp}?text=${encodeURIComponent(message())}`,'_blank','noopener,noreferrer');};
 $('#copy').onclick=async()=>{try{await navigator.clipboard.writeText(message());$('#feedback').textContent='Selección copiada.';}catch{$('#feedback').textContent=message();$('#feedback').style.whiteSpace='pre-wrap';}};
 render();
+

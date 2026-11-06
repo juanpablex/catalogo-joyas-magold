@@ -27,6 +27,17 @@ nav{align-items:center}nav button{min-height:44px}
 #catalogo>nav{position:sticky;top:var(--header-height);z-index:15;background:var(--cream);padding:10px 0;border-bottom:1px solid var(--line);box-shadow:0 5px 10px #332b2908}
 #catalogo{scroll-margin-top:calc(var(--header-height) + 16px)}
 
+/* Las fotos modeladas presentan cada categoría; las piezas mantienen su cuadrícula. */
+.category-section{margin:28px 0 64px;scroll-margin-top:calc(var(--header-height) + 100px)}
+.category-section>h2{padding-top:18px;border-top:1px solid var(--line)}
+.category-intro{color:#71665e;font-size:14px;max-width:650px;margin:12px 0 20px}
+.model-gallery{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 36px)/3);gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:16px;scrollbar-color:#b59a76 #eee6d9;scrollbar-width:auto}
+.model-photo{padding:0;border:0;border-radius:12px;overflow:hidden;scroll-snap-align:start;background:#eee6d9}
+.model-photo img{display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;transition:transform .2s}
+.model-photo:hover img{transform:scale(1.025)}
+.individual-title{font-size:25px;margin:28px 0 22px}
+@media(max-width:760px){.category-section{margin-bottom:44px}.model-gallery{grid-auto-columns:78%;gap:12px;margin-right:-2%;padding-right:5%}.category-intro{font-size:13px}.individual-title{font-size:23px}}
+@media(prefers-reduced-motion:reduce){.model-photo img{transition:none}}
 /* Catálogo compacto: cuatro piezas en web y tres en móvil. */
 .grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:26px 18px}
 .card .product-image{height:auto;aspect-ratio:1}
