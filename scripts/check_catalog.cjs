@@ -21,6 +21,10 @@ vm.createContext(context);
 for(const path of ['products.js','bracelets.js','gallery-photos.js','app.js'])vm.runInContext(fs.readFileSync(path,'utf8'),context);
 vm.runInContext(`
  if(products.length!==82)throw Error('Cambió el inventario');
+ for(const p of products){
+  if(galleryPhotos[p.id]&&p.images.some(photo=>photo.src.includes('20261031_')))throw Error('Sigue mostrando una foto antigua: '+p.id);
+  if(new Set(p.images.map(photo=>photo.detail||photo.src)).size!==p.images.length)throw Error('Fotos duplicadas: '+p.id);
+ }
  if(document.querySelector('#products').children.length!==7)throw Error('Faltan secciones');
  for(const [number,spots] of Object.entries(modelHotspots)){
   const scene=modelScene(modelPhoto(Number(number)),()=>{});
