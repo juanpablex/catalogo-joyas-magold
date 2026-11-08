@@ -18,9 +18,11 @@ const context={console,Map,Set,Math,Number,document:{
  querySelectorAll(){return []},createElement(){return new Element()},createElementNS(){return new Element()},documentElement:new Element()
 },window:{CATALOGO_CONFIG:{whatsapp:'59178367871'},addEventListener(){}},localStorage:{getItem(){return '[]'},setItem(){}}};
 vm.createContext(context);
-for(const path of ['products.js','bracelets.js','gallery-photos.js','ring-enhancements.js','app.js'])vm.runInContext(fs.readFileSync(path,'utf8'),context);
+for(const path of ['products.js','bracelets.js','gallery-photos.js','ring-enhancements.js','mirror-photos.js','app.js'])vm.runInContext(fs.readFileSync(path,'utf8'),context);
 vm.runInContext(`
  if(products.length!==82)throw Error('Cambió el inventario');
+ if(Object.keys(mirrorPhotos).length!==46)throw Error('Faltan fotos de espejo');
+ for(const p of products){if(mirrorPhotos[p.id]&&p.images[0].src!==mirrorPhotos[p.id].src)throw Error('No sustituyó portada');}
  for(const p of products){
   if(galleryPhotos[p.id]&&p.images.some(photo=>photo.src.includes('20261031_')))throw Error('Sigue mostrando una foto antigua: '+p.id);
   if(new Set(p.images.map(photo=>photo.detail||photo.src)).size!==p.images.length)throw Error('Fotos duplicadas: '+p.id);

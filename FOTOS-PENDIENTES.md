@@ -1,5 +1,13 @@
 # Fotos nuevas
 
+## Fondos de espejo
+
+Se sustituyeron las 46 tomas que aún tenían fondo rojo por ediciones de cada pieza sobre espejo dorado, retirando las tarjetas y etiquetas de las imágenes. No cambian las referencias ni los precios. Las fotos modeladas y los acercamientos de anillos conservan su aspecto anterior.
+
+Los archivos para web están en `assets/web/mirror`; `mirror-photos.js` aplica los reemplazos después de cargar las galerías. Los originales editados de mayor resolución y sus registros de generación se conservan localmente en `output/mirror-originals` y `output/mirror`. El empaquetado se realiza con `scripts/prepare_mirror_photos.py`.
+
+El resto de este documento describe la organización previa y las referencias que siguen pendientes.
+
 Origen: `D:\ia\joyas-imagenes`.
 
 Se incorporaron portadas de 13 piezas identificadas y fotos modeladas de los anillos 259, 265 y 134. Las fotos del estuche permanecen al final de sus galerías. Las portadas mejoradas de Flores de corazones y Destellos claros se conservan.
