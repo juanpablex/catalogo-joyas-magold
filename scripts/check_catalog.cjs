@@ -18,7 +18,7 @@ const context={console,Map,Set,Math,Number,document:{
  querySelectorAll(){return []},createElement(){return new Element()},createElementNS(){return new Element()},documentElement:new Element()
 },window:{CATALOGO_CONFIG:{whatsapp:'59178367871'},addEventListener(){}},localStorage:{getItem(){return '[]'},setItem(){}}};
 vm.createContext(context);
-for(const path of ['products.js','bracelets.js','gallery-photos.js','app.js'])vm.runInContext(fs.readFileSync(path,'utf8'),context);
+for(const path of ['products.js','bracelets.js','gallery-photos.js','ring-enhancements.js','app.js'])vm.runInContext(fs.readFileSync(path,'utf8'),context);
 vm.runInContext(`
  if(products.length!==82)throw Error('Cambió el inventario');
  for(const p of products){
