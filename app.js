@@ -57,12 +57,9 @@ function showPhoto(){
 function movePhoto(step){if(!activeProduct)return;photoIndex=(photoIndex+step+activeProduct.images.length)%activeProduct.images.length;showPhoto();}
 function openPhoto(p,origin=null){modelReturn=origin;activeProduct=p;photoIndex=0;showPhoto();if(!$('#photo').open)$('#photo').showModal();}
 function returnToModel(){if(!modelReturn)return;const {kind,number}=modelReturn;activeProduct={editorial:true,name:`${categoryTitles[kind]} · Fotos modeladas`,images:modelSets[kind].map(modelPhoto)};photoIndex=modelSets[kind].indexOf(number);showPhoto();}
-const modelSets={Cadenas:[0,2,4],Anillos:[1,3,5,6,7,8,9,10,17,23,31,41]};
+const modelSets={Anillos:[1,3,5,6,7,8,9,10,17,23,31,41]};
 // Coordenadas sobre la foto completa, en porcentajes. Solo piezas identificadas.
 const modelHotspots={
- 0:[{id:'CA-232016-1',x:53,y:64,w:50,h:18}],
- 2:[{id:'CA-231755-1',x:53,y:64,w:50,h:18}],
- 4:[{id:'CA-231811-1',x:53,y:64,w:50,h:18}],
  1:[{id:'AN-231644-2',x:35,y:26},{id:'AN-231535-3',x:43,y:25},{id:'AN-231535-1',x:52,y:31}],
  3:[{id:'AN-231644-2',x:53,y:22},{id:'AN-231644-6',x:61,y:22},{id:'AN-231644-1',x:68,y:26},{id:'AN-231535-1',x:18,y:66},{id:'AN-231535-2',x:32,y:57}],
  5:[{id:'AN-231644-2',x:39,y:4},{id:'AN-231644-6',x:49,y:1},{id:'AN-231644-1',x:60,y:1},{id:'AN-231535-1',x:40,y:52},{id:'AN-231535-2',x:50,y:36}],
@@ -144,8 +141,8 @@ function render(){
   const section=document.createElement('section');section.className='category-section';section.id=`section-${kind.replaceAll(' ','-')}`;
   const heading=document.createElement('h2');heading.textContent=categoryTitles[kind];section.append(heading);
   if(modelSets[kind]&&!query){
-   const intro=document.createElement('p');intro.className='category-intro';intro.textContent=kind==='Anillos'?'Toca un anillo o una manilla para ver su información. Desliza para explorar las 12 fotos.':'Toca el collar para ver su información, precio y fotos.';section.append(intro,modelGallery(kind));
-   const subtitle=document.createElement('h3');subtitle.className='individual-title';subtitle.textContent=kind==='Anillos'?'Elige tu anillo':'Elige tu collar';section.append(subtitle);
+   const intro=document.createElement('p');intro.className='category-intro';intro.textContent='Toca un anillo o una manilla para ver su información. Desliza para explorar las 12 fotos.';section.append(intro,modelGallery(kind));
+   const subtitle=document.createElement('h3');subtitle.className='individual-title';subtitle.textContent='Elige tu anillo';section.append(subtitle);
   }
   const grid=document.createElement('div');grid.className='grid';grid.append(...matches.map(item=>item.card));section.append(grid);sections.push(section);
  }
