@@ -24,7 +24,7 @@ for pid,name,number,box,model in entries:
   save(piece,pid+'-thumb.webp',480);save(piece,pid+'-detail.webp',1000)
   full=f'assets/web/bracelets/WA{number:04}.webp'
   base=f'assets/web/models/WA{model:04}'
-  products.append(dict(id=pid,tag=None,name=name,category='Manillas',price=None,image=full,images=[dict(src=full,original=full,thumbnail=f'assets/web/bracelets/{pid}-thumb.webp',detail=f'assets/web/bracelets/{pid}-detail.webp',label='Foto de la manilla'),dict(src=base+'-detail.webp',original=base+'-detail.webp',thumbnail=base+'-preview.webp',detail=base+'-detail.webp',label='Foto modelada')]))
+  products.append(dict(id=pid,tag={'MA-malla': 595, 'MA-perlas-alargadas': 409, 'MA-ovalos': 221, 'MA-rectangulos': 325, 'MA-perlitas-barras': 238, 'MA-medallones': 239}.get(pid),name=name,category='Manillas',price=None,image=full,images=[dict(src=full,original=full,thumbnail=f'assets/web/bracelets/{pid}-thumb.webp',detail=f'assets/web/bracelets/{pid}-detail.webp',label='Foto de la manilla'),dict(src=base+'-detail.webp',original=base+'-detail.webp',thumbnail=base+'-preview.webp',detail=base+'-detail.webp',label='Foto modelada')]))
 (root/'bracelets.js').write_text('// Generado por scripts/prepare_bracelets.py.\nwindow.PRODUCTS.push(...'+json.dumps(products,ensure_ascii=False)+');\n',encoding='utf-8')
 print('Seis fichas de manillas preparadas, sin inventar códigos ni precios.')
 
