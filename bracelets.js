@@ -14,3 +14,74 @@ for(const p of window.PRODUCTS){
  const model=p.images.find(photo=>photo.label==='Foto modelada');
  if(model)p.images=[model,...p.images.filter(photo=>photo!==model)];
 }
+
+window.PRODUCTS.push(...[
+  {
+    "id": "MA-310",
+    "tag": 310,
+    "name": "Perlas de Aurora",
+    "category": "Manillas",
+    "price": 589,
+    "image": "assets/web/bracelets/MA-310-detail.webp",
+    "images": [
+      {
+        "src": "assets/web/bracelets/MA-310-detail.webp",
+        "detail": "assets/web/bracelets/MA-310-detail.webp",
+        "thumbnail": "assets/web/bracelets/MA-310-thumb.webp",
+        "original": "assets/web/bracelets/MA-310-detail.webp",
+        "label": "Vista modelada con IA"
+      }
+    ]
+  },
+  {
+    "id": "MA-384",
+    "tag": 384,
+    "name": "Constelaci\u00f3n de Colores",
+    "category": "Manillas",
+    "price": 730,
+    "image": "assets/web/bracelets/MA-384-detail.webp",
+    "images": [
+      {
+        "src": "assets/web/bracelets/MA-384-detail.webp",
+        "detail": "assets/web/bracelets/MA-384-detail.webp",
+        "thumbnail": "assets/web/bracelets/MA-384-thumb.webp",
+        "original": "assets/web/bracelets/MA-384-detail.webp",
+        "label": "Vista modelada con IA"
+      }
+    ]
+  },
+  {
+    "id": "MA-252",
+    "tag": 252,
+    "name": "Latidos Dorados",
+    "category": "Manillas",
+    "price": 479,
+    "image": "assets/web/bracelets/MA-252-detail.webp",
+    "images": [
+      {
+        "src": "assets/web/bracelets/MA-252-detail.webp",
+        "detail": "assets/web/bracelets/MA-252-detail.webp",
+        "thumbnail": "assets/web/bracelets/MA-252-thumb.webp",
+        "original": "assets/web/bracelets/MA-252-detail.webp",
+        "label": "Vista modelada con IA"
+      }
+    ]
+  },
+  {
+    "id": "MA-329",
+    "tag": 329,
+    "name": "Perlas en \u00d3rbita",
+    "category": "Manillas",
+    "price": 625,
+    "image": "assets/web/bracelets/MA-329-detail.webp",
+    "images": [
+      {
+        "src": "assets/web/bracelets/MA-329-detail.webp",
+        "detail": "assets/web/bracelets/MA-329-detail.webp",
+        "thumbnail": "assets/web/bracelets/MA-329-thumb.webp",
+        "original": "assets/web/bracelets/MA-329-detail.webp",
+        "label": "Vista modelada con IA"
+      }
+    ]
+  }
+]);

@@ -20,7 +20,7 @@ const context={console,Map,Set,Math,Number,document:{
 vm.createContext(context);
 for(const path of ['products.js','bracelets.js','gallery-photos.js','ring-enhancements.js','mirror-photos.js','collar-photos.js','app.js'])vm.runInContext(fs.readFileSync(path,'utf8'),context);
 vm.runInContext(`
- if(products.length!==88)throw Error('Cambió el inventario');
+ if(products.length!==92)throw Error('Cambió el inventario');
  if(Object.keys(mirrorPhotos).length!==46)throw Error('Faltan fotos de espejo');
  for(const p of products){if(p.category!=='Cadenas'&&mirrorPhotos[p.id]&&p.images[0].src!==mirrorPhotos[p.id].src)throw Error('No sustituyó portada');}
  for(const p of products){
@@ -57,7 +57,7 @@ vm.runInContext(`
  if(!message().includes('MA-perlitas-barras')||!message().includes('452 Bs'))throw Error('Consulta de manilla incorrecta');
  if(document.querySelector('#total').textContent.includes('452 Bs')===false)throw Error('Total de manilla incorrecto');
  category='Manillas';render();
- if(document.querySelector('#products').children[0].children.at(-1).children.length!==6)throw Error('Faltan manillas');
+ if(document.querySelector('#products').children[0].children.at(-1).children.length!==10)throw Error('Faltan manillas');
  category='Anillos';render();
  if(document.querySelector('#products').children.length!==1)throw Error('Filtro incorrecto');
 `,context);
