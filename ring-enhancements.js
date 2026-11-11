@@ -3,8 +3,8 @@ const sharpenedRings=["AN-231535-1", "AN-231535-2", "AN-231535-3", "AN-231535-4"
 for(const p of window.PRODUCTS){
  if(!sharpenedRings.includes(p.id))continue;
  if(p.id==='AN-231535-3'){
-  const detail='assets/web/rings-sharp/198-modelo-detail.webp';
-  p.images=[{src:detail,original:detail,detail,thumbnail:'assets/web/rings-sharp/198-modelo-thumb.webp',label:'Vista modelada con IA'}];
+  const detail='assets/web/rings-sharp/198-dedo-detail.webp';
+  p.images=[{src:detail,original:detail,detail,thumbnail:'assets/web/rings-sharp/198-dedo-thumb.webp',label:'Vista modelada con IA'}];
   continue;
  }
  const cover=p.images[0];
