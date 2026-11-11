@@ -120,3 +120,5 @@ for(const product of window.PRODUCTS){
  });
 }
 
+
+window.PRODUCTS.push({id:'AG-184',tag:'184',category:'Argollas',name:'Argollas ovaladas con destellos',price:350,images:[{src:'assets/web/mirror/AG-184-detail.webp',detail:'assets/web/mirror/AG-184-detail.webp',thumbnail:'assets/web/mirror/AG-184-thumb.webp',original:'assets/web/mirror/AG-184-detail.webp',label:'Foto de la pieza'}]});
