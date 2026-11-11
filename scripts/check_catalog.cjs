@@ -51,11 +51,11 @@ vm.runInContext(`
  const wrist=modelScene(modelPhoto(41),()=>{});
  wrist.children.at(-1).onclick();
  if(activeProduct.id!=='MA-perlitas-barras')throw Error('La manilla abre otro producto');
- if(document.querySelector('#product-price').textContent!=='Consultar precio')throw Error('Inventó precio');
+ if(document.querySelector('#product-price').textContent!=='452 Bs')throw Error('Precio de manilla incorrecto');
  document.querySelector('#product-add').onclick();
  renderCart();
- if(!message().includes('MA-perlitas-barras')||message().includes('null'))throw Error('Consulta de manilla incorrecta');
- if(document.querySelector('#total').textContent!=='')throw Error('Calculó un total sin precio');
+ if(!message().includes('MA-perlitas-barras')||!message().includes('452 Bs'))throw Error('Consulta de manilla incorrecta');
+ if(document.querySelector('#total').textContent.includes('452 Bs')===false)throw Error('Total de manilla incorrecto');
  category='Manillas';render();
  if(document.querySelector('#products').children[0].children.at(-1).children.length!==6)throw Error('Faltan manillas');
  category='Anillos';render();
