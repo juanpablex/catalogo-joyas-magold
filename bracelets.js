@@ -4,6 +4,12 @@ window.PRODUCTS.push(...[{"id": "MA-malla", "tag": null, "name": "Manilla de mal
 // La vista en la muñeca abre cada ficha; el detalle queda como segunda foto.
 for(const p of window.PRODUCTS){
  if(p.category!=='Manillas')continue;
+ if(p.id==='MA-perlas-alargadas'){
+  const base='assets/web/bracelets/MA-perlas-muneca';
+  const detail=base+'-detail.webp';
+  p.images=[{src:detail,detail,original:detail,thumbnail:base+'-thumb.webp',label:'Foto modelada'},...p.images.filter(photo=>photo.label!=='Foto modelada')];
+  continue;
+ }
  const model=p.images.find(photo=>photo.label==='Foto modelada');
  if(model)p.images=[model,...p.images.filter(photo=>photo!==model)];
 }
