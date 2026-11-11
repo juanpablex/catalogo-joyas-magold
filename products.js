@@ -14,9 +14,9 @@ const groups = [
  ['60','Ositos',0,100],['45','Flores verdes',100,100]]],
  ['193109','Argollas',[
  ['337','Argollas ovaladas',50,0],['254','Argollas redondas',50,33],
- ['312','Argollas con destellos claros',50,66],['259','Argollas con detalle azul',50,100]]],
+ ['357','Argollas de corazones',50,66],['259','Argollas con detalle azul',50,100]]],
  ['193147','Argollas',[
- ['357','Argollas de corazones',50,30],['315','Argollas geométricas',50,62],['406','Argollas alargadas',50,100]]],
+ ['312','Argollas con frente brillante',50,30],['315','Argollas geométricas',50,62],['406','Argollas alargadas',50,100]]],
  ['190043','Aretes',[
  ['196','Óvalos con detalle violeta',50,0],['160','Flores con centro claro',50,50],['182','Flores de destellos',50,100]]],
  ['190134','Aretes',[
