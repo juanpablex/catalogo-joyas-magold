@@ -14,9 +14,9 @@ const groups = [
  ['60','Ositos',0,100],['45','Flores verdes',100,100]]],
  ['193109','Argollas',[
  ['337','Argollas ovaladas',50,0],['254','Argollas redondas',50,33],
- ['357','Argollas con destellos claros',50,66],['259','Argollas con detalle azul',50,100]]],
+ ['312','Argollas con destellos claros',50,66],['259','Argollas con detalle azul',50,100]]],
  ['193147','Argollas',[
- ['312','Argollas con frente brillante',50,30],['315','Argollas geométricas',50,62],['406','Argollas alargadas',50,100]]],
+ ['357','Argollas de corazones',50,30],['315','Argollas geométricas',50,62],['406','Argollas alargadas',50,100]]],
  ['190043','Aretes',[
  ['196','Óvalos con detalle violeta',50,0],['160','Flores con centro claro',50,50],['182','Flores de destellos',50,100]]],
  ['190134','Aretes',[
@@ -33,7 +33,7 @@ const extraPrices = {
  'Aretes': {76:144,120:228,185:352,157:298,205:390,142:270,152:289},
  'Aretes grandes': {304:578,198:376,310:589,202:384,209:397,329:625,373:709,167:317},
  'Anillos': {136:258,270:513,271:515,254:483,198:376,230:437,215:409,340:646,166:315,265:504,134:255,203:386,259:492},
- 'Cadenas': {292:555,803:1526,316:600,349:663,282:536},
+ 'Cadenas': {484:920,803:1526,316:600,349:663,466:885},
  'Dijes': {164:312,60:114,180:342,79:150,226:429,106:201,129:245,115:219,154:293,66:125}
 };
 const additions = [
@@ -48,12 +48,12 @@ const additions = [
   ['152','Diseño curvo con destellos',[.24,.66,.49,.24]]]],
  ['231535','Anillos',[
   ['215','Anillo ondulado',[.25,.08,.44,.13]],
-  ['198','Anillo de tres destellos',[.27,.21,.38,.09]],
-  ['230','Anillo con corazón',[.29,.35,.35,.10]],
+  ['230','Anillo de tres destellos',[.27,.21,.38,.09]],
+  ['198','Anillo con corazón',[.29,.35,.35,.10]],
   ['254','Anillo con flor brillante',[.28,.45,.36,.12]],
   ['271','Anillo circular brillante',[.29,.61,.36,.10]],
-  ['136','Anillo con detalle central',[.30,.75,.35,.10]],
-  ['270','Anillo floral con color',[.30,.87,.35,.12]]]],
+  ['270','Anillo con detalle central',[.30,.75,.35,.10]],
+  ['136','Anillo de perlitas rojas',[.30,.87,.35,.12]]]],
  ['231644','Anillos',[
   ['340','Anillo abierto de gotas',[.30,.08,.26,.14]],
   ['166','Anillo de corazones calados',[.31,.30,.23,.08]],
@@ -62,11 +62,11 @@ const additions = [
   ['134','Anillo de línea ondulada',[.31,.64,.23,.075]],
   ['203','Anillo de círculo abierto',[.31,.74,.23,.10]],
   ['259','Anillo con fila de destellos',[.29,.88,.26,.12]]]],
- ['231755','Cadenas', [['292','Cadena de eslabones finos',[.12,.22,.57,.56]]]],
+ ['231755','Cadenas', [['484','Cadena de eslabones finos',[.12,.22,.57,.56]]]],
  ['231811','Cadenas', [['803','Cadena de eslabones rectangulares',[.01,.29,.83,.49]]]],
  ['232125','Cadenas', [['316','Cadena con detalles esféricos',[.02,.22,.85,.65]]]],
  ['232111','Cadenas', [['349','Cadena de eslabones alargados',[0,.25,.78,.59]]]],
- ['232016','Cadenas', [['282','Cadena de eslabones compactos',[.04,.23,.81,.57]]]],
+ ['232016','Cadenas', [['466','Cadena de eslabones compactos',[.04,.23,.81,.57]]]],
  ['203302','Dijes',[
   ['79','Dije de corazón con destellos',[.33,.18,.12,.085]],
   ['180','Dije de círculos entrelazados',[.28,.33,.20,.115]],
@@ -119,3 +119,4 @@ for(const product of window.PRODUCTS){
   detail:`assets/web/${product.id}-enhanced-detail.webp`
  });
 }
+
