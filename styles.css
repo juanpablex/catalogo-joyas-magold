@@ -104,3 +104,5 @@ nav{align-items:center}nav button{min-height:44px}
  #product-info h2{font-size:20px}#product-info .product-note{display:none}
  #product-info .price{margin:5px 0}#photo-caption{margin-top:3px}
 }
+
+.photo-pending{margin:0;aspect-ratio:1;display:grid;place-items:center;border-radius:8px;background:#f0e8de;color:#71665e;font-size:13px;text-align:center}

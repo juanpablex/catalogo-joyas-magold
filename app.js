@@ -128,13 +128,14 @@ function render(){
  const cards=shown.map(p=>{
   const article=document.createElement('article');article.className='card';
   const image=document.createElement('button');image.className='image-button';image.setAttribute('aria-label',`Ver foto de ${p.name}`);
-  const frame=photoFrame(p,p.images[0]);
-  image.append(frame);image.onclick=()=>openPhoto(p);
+  if(p.images.length){image.append(photoFrame(p,p.images[0]));image.onclick=()=>openPhoto(p);}
   const heading=document.createElement('h3');heading.textContent=p.name;
   const meta=document.createElement('p');meta.className='meta';meta.textContent=`${p.category} · Código ${p.tag||'Por confirmar'}`;
   const price=document.createElement('p');price.className='price';price.textContent=p.price===null?'Consultar precio':money(p.price);
   const add=document.createElement('button');add.className=`add ${selected.has(p.id)?'selected':''}`;add.textContent=selected.has(p.id)?'✓ En tu selección':'＋ Agregar a mi selección';add.setAttribute('aria-pressed',selected.has(p.id));add.onclick=()=>{selected.has(p.id)?selected.delete(p.id):selected.add(p.id);persist();render();};
-  article.append(image,heading,meta,price,add);return article;
+  const visual=p.images.length?image:document.createElement("p");
+  if(!p.images.length){visual.className="photo-pending";visual.textContent="Foto pendiente";}
+  article.append(visual,heading,meta,price,add);return article;
  });
  const sections=[];
  for(const kind of ['Cadenas','Anillos','Manillas','Aretes','Aretes grandes','Argollas','Dijes']){

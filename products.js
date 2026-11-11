@@ -122,3 +122,7 @@ for(const product of window.PRODUCTS){
 
 
 window.PRODUCTS.push({id:'AG-184',tag:'184',category:'Argollas',name:'Argollas ovaladas con destellos',price:350,images:[{src:'assets/web/mirror/AG-184-detail.webp',detail:'assets/web/mirror/AG-184-detail.webp',thumbnail:'assets/web/mirror/AG-184-thumb.webp',original:'assets/web/mirror/AG-184-detail.webp',label:'Foto de la pieza'}]});
+
+for(const [tag,price] of [['282',536],['218',414],['278',528],['292',555],['629',1195]]){
+ window.PRODUCTS.push({id:'CA-'+tag,tag,price,name:'Collar '+tag,category:'Cadenas',images:[]});
+}
