@@ -106,3 +106,5 @@ nav{align-items:center}nav button{min-height:44px}
 }
 
 .photo-pending{margin:0;aspect-ratio:1;display:grid;place-items:center;border-radius:8px;background:#f0e8de;color:#71665e;font-size:13px;text-align:center}
+
+.jewelry-packbar{display:flex;align-items:center;justify-content:space-between;gap:18px;max-width:1280px;margin:24px auto 0;padding:0 5%;font-size:14px;color:#655641}.jewelry-packbar a{color:inherit}.jewelry-packbar label{display:flex;align-items:center;gap:10px;font-size:12px}.jewelry-packbar select{font:inherit;padding:9px 12px;background:white;border:1px solid #d6c6af;border-radius:5px;color:#655641}@media(max-width:600px){.jewelry-packbar{flex-wrap:wrap;font-size:12px;margin-top:18px;gap:12px}.jewelry-packbar label{margin-left:auto}.jewelry-packbar strong{font-size:13px}}
